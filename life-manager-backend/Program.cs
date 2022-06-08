@@ -12,6 +12,7 @@ namespace life_manager_backend
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<InMemoryDataStore>();
 
             var app = builder.Build();
 

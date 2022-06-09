@@ -1,3 +1,6 @@
+using life_manager_backend.DbContexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace life_manager_backend
 {
     public class Program
@@ -13,6 +16,12 @@ namespace life_manager_backend
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddSingleton<InMemoryDataStore>();
+            
+            builder.Services.AddDbContext<FoodContext>(
+                dbContextOptions => dbContextOptions.UseMySql(
+                    builder.Configuration["LifeManagerMySQLConnectionString"],
+                    ServerVersion.AutoDetect(builder.Configuration["LifeManagerMySQLConnectionString"]))
+                );
 
             var app = builder.Build();
 
@@ -25,9 +34,12 @@ namespace life_manager_backend
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
             app.UseAuthorization();
 
-            app.MapControllers();
+            app.UseEndpoints(endpoints =>
+                endpoints.MapControllers());            
 
             app.Run();
         }

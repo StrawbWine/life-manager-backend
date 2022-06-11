@@ -1,4 +1,6 @@
-﻿namespace life_manager_backend.Models
+﻿using life_manager_backend.Utilities;
+
+namespace life_manager_backend.Models
 {
     public class FoodPortionDto
     {
@@ -6,76 +8,16 @@
         public FoodDto Food { get; set; }
         public int WeightInGrams { get; set; }
         public DateTime DateConsumed { get; set; }
-        public double? Energy
-        {
-            get
-            {
-                return Food.Energy * WeightInGrams * 0.01;             
-            }
-        }
-        public double? Fat
-        {
-            get
-            {
-                return Food.Fat * WeightInGrams * 0.01;
-            }
-        }
-        public double? SaturatedFat
-        {
-            get
-            {
-                return Food.SaturatedFat * WeightInGrams * 0.01;
-            }
-        }
-        public double? MonoUnsaturatedFat
-        {
-            get
-            {
-                return Food.MonoUnsaturatedFat * WeightInGrams * 0.01;
-            }
-        }
-        public double? PolyUnsaturatedFat
-        {
-            get
-            {
-                return Food.PolyUnsaturatedFat * WeightInGrams * 0.01;
-            }
-        }
-        public double? Carbohydrates
-        {
-            get
-            {
-                return Food.Carbohydrates * WeightInGrams * 0.01;
-            }
-        }
-        public double? Sugars
-        {
-            get
-            {
-                return Food.Sugars * WeightInGrams * 0.01;
-            }
-        }
-        public double? Protein
-        {
-            get
-            {
-                return Food.Protein * WeightInGrams * 0.01;
-            }
-        }
-        public double? Salt
-        {
-            get
-            {
-                return Food.Salt * WeightInGrams * 0.01;
-            }
-        }
-        public double? Fiber
-        {
-            get
-            {
-                return Food.Fiber * WeightInGrams * 0.01;
-            }
-        }
+        public double? Energy => FoodPortionUtilities.calculateTotalContent(Food.Energy, WeightInGrams);
+        public double? Fat => FoodPortionUtilities.calculateTotalContent(Food.Fat, WeightInGrams);
+        public double? SaturatedFat => FoodPortionUtilities.calculateTotalContent(Food.SaturatedFat, WeightInGrams);
+        public double? MonoUnsaturatedFat => FoodPortionUtilities.calculateTotalContent(Food.MonoUnsaturatedFat, WeightInGrams);
 
+        public double? PolyUnsaturatedFat => FoodPortionUtilities.calculateTotalContent(Food.PolyUnsaturatedFat, WeightInGrams);
+        public double? Carbohydrates => FoodPortionUtilities.calculateTotalContent(Food.Carbohydrates, WeightInGrams);
+        public double? Sugars => FoodPortionUtilities.calculateTotalContent(Food.Sugars, WeightInGrams);
+        public double? Protein => FoodPortionUtilities.calculateTotalContent(Food.Protein, WeightInGrams);
+        public double? Salt => FoodPortionUtilities.calculateTotalContent(Food.Salt, WeightInGrams);
+        public double? Fiber => FoodPortionUtilities.calculateTotalContent(Food.Fiber, WeightInGrams);
     }
 }

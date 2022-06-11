@@ -23,6 +23,8 @@ namespace life_manager_backend
                     ServerVersion.AutoDetect(builder.Configuration["LifeManagerMySQLConnectionString"]))
                 );
 
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

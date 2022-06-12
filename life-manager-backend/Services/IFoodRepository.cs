@@ -4,8 +4,8 @@ namespace life_manager_backend.Services
 {
     public interface IFoodRepository
     {
-        Task<IEnumerable<Food>> GetFoods();
-        Task<Food?> GetFoodById(int id);
-        Task<IEnumerable<FoodPortion>> GetFoodPortions(bool includeFoodInfo);
+        Task<IEnumerable<Food>> GetFoodsAsync();
+        Task<Food?> GetFoodByIdAsync(int id);
+        Task<IEnumerable<FoodPortion>> GetFoodPortionsAsync(bool includeFoodInfo);
     }
 }

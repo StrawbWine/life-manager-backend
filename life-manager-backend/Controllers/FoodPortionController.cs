@@ -23,7 +23,7 @@ namespace life_manager_backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FoodPortionDto>>> GetFoodPortions()
         {
-            var foodPortionEntity = await _repository.GetFoodPortions(true);
+            var foodPortionEntity = await _repository.GetFoodPortionsAsync(true);
             return Ok(_mapper.Map<IEnumerable<FoodPortionDto>>(foodPortionEntity));
         }
     }

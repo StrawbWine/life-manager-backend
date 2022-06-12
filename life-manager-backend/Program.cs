@@ -1,4 +1,5 @@
 using life_manager_backend.DbContexts;
+using life_manager_backend.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace life_manager_backend
@@ -24,6 +25,8 @@ namespace life_manager_backend
                 );
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 
             var app = builder.Build();
 

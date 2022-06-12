@@ -1,5 +1,6 @@
 ﻿using life_manager_backend.DbContexts;
 using life_manager_backend.Models;
+using life_manager_backend.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,19 +11,16 @@ namespace life_manager_backend.Controllers
     [ApiController]
     public class FoodController : ControllerBase
     {
-        private readonly InMemoryDataStore _dataStore;
-        private readonly FoodContext _context;
+        private readonly IFoodRepository _repository;
 
-        public FoodController(InMemoryDataStore dataStore, FoodContext context)
+        public FoodController(IFoodRepository repository)
         {
-            _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FoodDto>>> GetFoods()
         {
-            //var foods = _dataStore.Foods;
-            var foods = await _context.Foods.ToListAsync();
+            var foods = await _repository.GetFoods();
             return Ok(foods);
         }
     }

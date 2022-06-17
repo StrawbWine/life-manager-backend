@@ -49,5 +49,21 @@ namespace life_manager_backend.Controllers
             var foodToReturn = _mapper.Map<FoodDto>(foodEntity);
             return CreatedAtRoute("GetFood", new { foodId = foodToReturn.Id }, foodToReturn);
         }
+
+        [HttpDelete("{foodId}")]
+        public async Task<ActionResult> DeleteFood(long foodId)
+        {
+            var foodEntity = await _repository.GetFoodByIdAsync(foodId);
+
+            if (foodEntity == null)
+            {
+                return NotFound();
+            }
+
+            _repository.DeleteFood(foodEntity);
+            await _repository.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }

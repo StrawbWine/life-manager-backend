@@ -37,6 +37,11 @@ namespace life_manager_backend.Services
             _context.Foods.Add(food);
         }
 
+        public void DeleteFood(Food food)
+        {
+            _context.Foods.Remove(food);
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync() >= 0);

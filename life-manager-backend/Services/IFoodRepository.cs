@@ -8,6 +8,7 @@ namespace life_manager_backend.Services
         Task<Food?> GetFoodByIdAsync(long id);
         Task<IEnumerable<FoodPortion>> GetFoodPortionsAsync(bool includeFoodInfo);
         void AddFood(Food food);
+        void DeleteFood(Food food);
         Task<bool> SaveChangesAsync();
     }
 }

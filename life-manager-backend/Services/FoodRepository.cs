@@ -13,7 +13,7 @@ namespace life_manager_backend.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<Food?> GetFoodByIdAsync(int id)
+        public async Task<Food?> GetFoodByIdAsync(long id)
         {
             return await _context.Foods.Where(f => f.Id == id).FirstOrDefaultAsync();
         }
@@ -30,6 +30,16 @@ namespace life_manager_backend.Services
         public async Task<IEnumerable<Food>> GetFoodsAsync()
         {
             return await _context.Foods.ToListAsync();
+        }
+
+        public void AddFood(Food food)
+        {
+            _context.Foods.Add(food);
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync() >= 0);
         }
     }
 }

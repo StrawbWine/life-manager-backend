@@ -6,7 +6,8 @@ namespace life_manager_backend.Profiles
     {
         public FoodProfile()
         {
-            CreateMap<Entities.Food, Models.FoodDto>();            
+            CreateMap<Entities.Food, Models.FoodDto>();
+            CreateMap<Models.FoodForCreationDto, Entities.Food>();
         }
     }
 }

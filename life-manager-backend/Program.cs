@@ -7,10 +7,18 @@ namespace life_manager_backend
     public class Program
     {
         public static void Main(string[] args)
-        {
+        {            
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                    {
+                        policy.WithOrigins(builder.Configuration["LifeManagerApiCorsEnabledUrl"]);
+                    });
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -40,6 +48,8 @@ namespace life_manager_backend
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

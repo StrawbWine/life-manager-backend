@@ -16,7 +16,9 @@ namespace life_manager_backend
             {
                 options.AddDefaultPolicy(policy =>
                     {
-                        policy.WithOrigins(builder.Configuration["LifeManagerApiCorsEnabledUrl"]);
+                        policy.AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins(builder.Configuration["LifeManagerApiCorsEnabledUrl"]);
                     });
             });
 

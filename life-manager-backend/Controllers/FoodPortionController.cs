@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using life_manager_backend.DbContexts;
+using life_manager_backend.Entities;
 using life_manager_backend.Models;
 using life_manager_backend.Services;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,24 @@ namespace life_manager_backend.Controllers
         {
             var foodPortionEntity = await _repository.GetFoodPortionsAsync(true);
             return Ok(_mapper.Map<IEnumerable<FoodPortionDto>>(foodPortionEntity));
+        }
+
+        [HttpGet("{id}", Name = "GetFoodPortion")]
+        public async Task<ActionResult<FoodPortionDto>> GetFoodPortion(long id)
+        {
+            var foodPortionEntity = await _repository.GetFoodPortionByIdAsync(id);
+            return Ok(_mapper.Map<FoodPortionDto>(foodPortionEntity));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<FoodPortionDto>> CreateFoodPortion(FoodPortionForCreationDto foodPortion)
+        {
+            var foodPortionEntity = _mapper.Map<FoodPortion>(foodPortion);
+            _repository.AddFoodPortion(foodPortionEntity);
+            await _repository.SaveChangesAsync();            
+            var foodPortionFromDatabase = await _repository.GetFoodPortionByIdAsync(foodPortionEntity.FoodId);
+            var foodPortionToReturn = _mapper.Map<FoodPortionDto>(foodPortionFromDatabase);
+            return CreatedAtRoute("GetFoodPortion", new { id = foodPortionToReturn.Id }, foodPortionToReturn);
         }
     }
 }

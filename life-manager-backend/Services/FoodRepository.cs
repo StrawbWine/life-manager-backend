@@ -27,6 +27,11 @@ namespace life_manager_backend.Services
             return await _context.FoodPortions.ToListAsync();
         }
 
+        public async Task<FoodPortion?> GetFoodPortionByIdAsync(long id)
+        {
+            return await _context.FoodPortions.Where(f => f.Id == id).Include(f => f.Food).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Food>> GetFoodsAsync()
         {
             return await _context.Foods.ToListAsync();
@@ -42,9 +47,21 @@ namespace life_manager_backend.Services
             _context.Foods.Remove(food);
         }
 
+        public void AddFoodPortion(FoodPortion foodPortion)
+        {
+            _context.FoodPortions.Add(foodPortion);
+        }
+
+        public void DeleteFoodPortion(FoodPortion foodPortion)
+        {
+            _context.FoodPortions.Remove(foodPortion);
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync() >= 0);
         }
+
+
     }
 }

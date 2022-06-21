@@ -41,7 +41,7 @@ namespace life_manager_backend.Controllers
             var foodPortionEntity = _mapper.Map<FoodPortion>(foodPortion);
             _repository.AddFoodPortion(foodPortionEntity);
             await _repository.SaveChangesAsync();            
-            var foodPortionFromDatabase = await _repository.GetFoodPortionByIdAsync(foodPortionEntity.FoodId);
+            var foodPortionFromDatabase = await _repository.GetFoodPortionByIdAsync(foodPortionEntity.Id);
             var foodPortionToReturn = _mapper.Map<FoodPortionDto>(foodPortionFromDatabase);
             return CreatedAtRoute("GetFoodPortion", new { id = foodPortionToReturn.Id }, foodPortionToReturn);
         }

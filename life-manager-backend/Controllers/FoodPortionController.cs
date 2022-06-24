@@ -21,11 +21,26 @@ namespace life_manager_backend.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FoodPortionDto>>> GetFoodPortions()
+        public async Task<ActionResult<IEnumerable<FoodPortionDto>>> GetFoodPortions(string? dateConsumed)
         {
-            var foodPortionEntity = await _repository.GetFoodPortionsAsync(true);
-            return Ok(_mapper.Map<IEnumerable<FoodPortionDto>>(foodPortionEntity));
+            if (dateConsumed == null || dateConsumed == "")
+            {
+                var foodPortionEntities = await _repository.GetFoodPortionsAsync(true);
+                return Ok(_mapper.Map<IEnumerable<FoodPortionDto>>(foodPortionEntities));
+            }
+
+            try
+            {
+                var dateConsumedParsed = DateTime.Parse(dateConsumed);
+                var filteredFoodPortionEntities = await _repository.GetFoodPortionsByDateConsumedAsync(dateConsumedParsed);
+                return Ok(_mapper.Map<IEnumerable<FoodPortionDto>>(filteredFoodPortionEntities));
+            }
+            catch (FormatException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}", Name = "GetFoodPortion")]

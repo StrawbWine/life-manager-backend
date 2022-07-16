@@ -24,20 +24,22 @@ namespace life_manager_backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FoodDto>>> GetFoods()
         {
-            var foods = await _repository.GetFoodsAsync();
-            return Ok(foods);
+            var foodEntities = await _repository.GetFoodsAsync();
+            var foodDtos = _mapper.Map<IEnumerable<FoodDto>>(foodEntities);
+            return Ok(foodDtos);
         }
 
-        [HttpGet("{foodid}", Name = "GetFood")]
-        public async Task<ActionResult<FoodDto>> GetFood(long foodId)
+        [HttpGet("{id}", Name = "GetFood")]
+        public async Task<ActionResult<FoodDto>> GetFood(string id)
         {
-            var foodEntity = await _repository.GetFoodByIdAsync(foodId);
+            var foodEntity = await _repository.GetFoodByIdAsync(id);
             if (foodEntity == null)
             {
                 return NotFound();
             }
+            var foodDto = _mapper.Map<FoodDto>(foodEntity);
 
-            return Ok(foodEntity);
+            return Ok(foodDto);
         }
 
         [HttpPost]
@@ -47,13 +49,13 @@ namespace life_manager_backend.Controllers
             _repository.AddFood(foodEntity);
             await _repository.SaveChangesAsync();
             var foodToReturn = _mapper.Map<FoodDto>(foodEntity);
-            return CreatedAtRoute("GetFood", new { foodId = foodToReturn.Id }, foodToReturn);
+            return CreatedAtRoute("GetFood", new { Id = foodToReturn.Id }, foodToReturn);
         }
 
-        [HttpDelete("{foodId}")]
-        public async Task<ActionResult> DeleteFood(long foodId)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteFood(string id)
         {
-            var foodEntity = await _repository.GetFoodByIdAsync(foodId);
+            var foodEntity = await _repository.GetFoodByIdAsync(id);
 
             if (foodEntity == null)
             {

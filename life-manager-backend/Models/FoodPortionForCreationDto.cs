@@ -2,8 +2,8 @@
 {
     public class FoodPortionForCreationDto
     {
-        public long FoodId { get; set; }
+        public string FoodId { get; set; }
         public int WeightInGrams { get; set; }
-        public DateTime DateConsumed { get; set; }
+        public string DateConsumed { get; set; }
     }
 }

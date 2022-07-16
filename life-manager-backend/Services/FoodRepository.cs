@@ -13,7 +13,7 @@ namespace life_manager_backend.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<Food?> GetFoodByIdAsync(long id)
+        public async Task<Food?> GetFoodByIdAsync(string id)
         {
             return await _context.Foods.Where(f => f.Id == id).FirstOrDefaultAsync();
         }
@@ -27,7 +27,7 @@ namespace life_manager_backend.Services
             return await _context.FoodPortions.ToListAsync();
         }
 
-        public async Task<IEnumerable<FoodPortion>> GetFoodPortionsByDateConsumedAsync(DateTime dateConsumed)
+        public async Task<IEnumerable<FoodPortion>> GetFoodPortionsByDateConsumedAsync(string dateConsumed)
         {
             return await _context.FoodPortions
                 .Where(f => f.DateConsumed == dateConsumed)
@@ -35,7 +35,7 @@ namespace life_manager_backend.Services
                 .ToListAsync();
         }
 
-        public async Task<FoodPortion?> GetFoodPortionByIdAsync(long id)
+        public async Task<FoodPortion?> GetFoodPortionByIdAsync(string id)
         {
             return await _context.FoodPortions.Where(f => f.Id == id).Include(f => f.Food).FirstOrDefaultAsync();
         }

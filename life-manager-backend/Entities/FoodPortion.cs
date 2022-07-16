@@ -7,21 +7,23 @@ namespace life_manager_backend.Entities
     public class FoodPortion
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
         public Food? Food { get; set; }
         [ForeignKey("FoodId")]
-        public long FoodId { get; set; }
+        public string FoodId { get; set; }
         [Range(0.0, int.MaxValue)]
         public int WeightInGrams { get; set; }
         [DataType(DataType.Date)]
-        public DateTime DateConsumed { get; set; }
+        public string DateConsumed { get; set; }
+        public string PartitionKey { get; set; } = "1";
 
-        public FoodPortion(long foodId, int weightInGrams, DateTime dateConsumed)
+        public FoodPortion(string foodId, int weightInGrams, string dateConsumed)
         {
             FoodId = foodId;
             WeightInGrams = weightInGrams;
             DateConsumed = dateConsumed;
+            Id = Guid.NewGuid().ToString();
         }        
     }
 }

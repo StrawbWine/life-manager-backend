@@ -6,6 +6,7 @@ using life_manager_backend.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace life_manager_backend.Controllers
 {
@@ -32,9 +33,8 @@ namespace life_manager_backend.Controllers
             }
 
             try
-            {
-                var dateConsumedParsed = DateTime.Parse(dateConsumed);
-                var filteredFoodPortionEntities = await _repository.GetFoodPortionsByDateConsumedAsync(dateConsumedParsed);
+            {                
+                var filteredFoodPortionEntities = await _repository.GetFoodPortionsByDateConsumedAsync(dateConsumed);
                 return Ok(_mapper.Map<IEnumerable<FoodPortionDto>>(filteredFoodPortionEntities));
             }
             catch (FormatException ex)
@@ -44,7 +44,7 @@ namespace life_manager_backend.Controllers
         }
 
         [HttpGet("{id}", Name = "GetFoodPortion")]
-        public async Task<ActionResult<FoodPortionDto>> GetFoodPortion(long id)
+        public async Task<ActionResult<FoodPortionDto>> GetFoodPortion(string id)
         {
             var foodPortionEntity = await _repository.GetFoodPortionByIdAsync(id);
             return Ok(_mapper.Map<FoodPortionDto>(foodPortionEntity));
@@ -62,7 +62,7 @@ namespace life_manager_backend.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteFoodPortion(long id)
+        public async Task<ActionResult> DeleteFoodPortion(string id)
         {
             var foodPortionToDelete = await _repository.GetFoodPortionByIdAsync(id);
 

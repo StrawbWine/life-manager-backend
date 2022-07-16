@@ -1,14 +1,15 @@
 ﻿using life_manager_backend.Entities;
+using life_manager_backend.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace life_manager_backend.DbContexts
 {
-    public class FoodContext : DbContext
+    public class CosmosContext : DbContext
     {
         public DbSet<Food> Foods { get; set; } = null!;
         public DbSet<FoodPortion> FoodPortions { get; set; } = null!;
 
-        public FoodContext(DbContextOptions<FoodContext> options) : base(options)
+        public CosmosContext(DbContextOptions<CosmosContext> options) : base(options)
         {
 
         }
@@ -39,12 +40,28 @@ namespace life_manager_backend.DbContexts
                     new FoodPortion(
                         foodId: foodGuid,
                         weightInGrams: 870,
-                        dateConsumed: "2022-6-10"
+                        dateConsumed: "2022-06-10"
                         )
                     {
                         Id = foodPortionGuid
                     }
                 );
+
+            modelBuilder
+                .HasDefaultContainer("lifemgr-default")
+                .HasManualThroughput(400);
+
+            modelBuilder.Entity<Food>()
+                .HasKey(f => f.Id);
+
+            modelBuilder.Entity<Food>()
+                .HasPartitionKey(f => f.PartitionKey);
+
+            modelBuilder.Entity<FoodPortion>()
+                .HasKey(f => f.Id);
+
+            modelBuilder.Entity<FoodPortion>()
+                .HasPartitionKey(f => f.PartitionKey);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -6,8 +6,8 @@ namespace life_manager_backend.Entities
     public class Food
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
         [Required]
         public string Name { get; set; } = String.Empty;
         [Range(0.0, double.MaxValue)]
@@ -30,10 +30,12 @@ namespace life_manager_backend.Entities
         public double? Salt { get; set; }
         [Range(0.0, double.MaxValue)]
         public double? Fiber { get; set; }
+        public string PartitionKey { get; set; } = "1";
 
         public Food(string name)
         {
             Name = name;
+            Id = Guid.NewGuid().ToString();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace life_manager_backend
             var foods = new List<FoodDto>();
             foods.Add(new FoodDto()
             {
-                Id = 1,
+                Id = Guid.NewGuid().ToString(),
                 Name = "Spaghetti a la Capri",
                 Energy = 99,
                 Fat = 4.10,

@@ -2,7 +2,7 @@
 {
     public class FoodDto
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; } = String.Empty;
         public double? Energy { get; set; }
         public double? Fat { get; set; }

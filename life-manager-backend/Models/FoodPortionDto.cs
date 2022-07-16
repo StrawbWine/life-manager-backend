@@ -4,10 +4,10 @@ namespace life_manager_backend.Models
 {
     public class FoodPortionDto
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public FoodDto Food { get; set; }
         public int WeightInGrams { get; set; }
-        public DateTime DateConsumed { get; set; }
+        public string DateConsumed { get; set; }
         public double? Energy => FoodPortionUtilities.calculateTotalContent(Food.Energy, WeightInGrams);
         public double? Fat => FoodPortionUtilities.calculateTotalContent(Food.Fat, WeightInGrams);
         public double? SaturatedFat => FoodPortionUtilities.calculateTotalContent(Food.SaturatedFat, WeightInGrams);

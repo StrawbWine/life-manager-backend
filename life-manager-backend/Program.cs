@@ -34,15 +34,15 @@ namespace life_manager_backend
 
             // Add services to the container.
 
-            builder.Services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(policy =>
-                    {
-                        policy.AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .WithOrigins(builder.Configuration["LifeManagerApiCorsEnabledUrl"]);
-                    });
-            });
+            //builder.Services.AddCors(options =>
+            //{
+            //    options.AddDefaultPolicy(policy =>
+            //        {
+            //            policy.AllowAnyMethod()
+            //            .AllowAnyHeader()
+            //            .WithOrigins(builder.Configuration["LifeManagerApiCorsEnabledUrl"]);
+            //        });
+            //});
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -50,11 +50,11 @@ namespace life_manager_backend
             builder.Services.AddSwaggerGen();
             builder.Services.AddSingleton<InMemoryDataStore>();
 
-            builder.Services.AddDbContext<FoodContext>(
-                dbContextOptions => dbContextOptions.UseMySql(
-                    builder.Configuration["LifeManagerMySQLConnectionString"],
-                    ServerVersion.AutoDetect(builder.Configuration["LifeManagerMySQLConnectionString"]))
-                );
+            //builder.Services.AddDbContext<FoodContext>(
+            //    dbContextOptions => dbContextOptions.UseMySql(
+            //        builder.Configuration["LifeManagerMySQLConnectionString"],
+            //        ServerVersion.AutoDetect(builder.Configuration["LifeManagerMySQLConnectionString"]))
+            //    );
 
             builder.Services.AddDbContextFactory<CosmosContext>(optionsBuilder => {
                 optionsBuilder.UseCosmos(

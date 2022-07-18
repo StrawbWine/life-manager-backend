@@ -11,8 +11,8 @@ namespace life_manager_backend.Services
         public CosmosRepository(CosmosContext _context)
         {
             this._context = _context ?? throw new ArgumentNullException(nameof(_context));
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
+            //_context.Database.EnsureDeleted();
+            //_context.Database.EnsureCreated();
         }
 
         public void AddFood(Food food)

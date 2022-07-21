@@ -89,7 +89,9 @@ namespace life_manager_backend
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
-                endpoints.MapControllers());            
+                endpoints.MapControllers());
+
+            app.MapGet("/", () => builder.Configuration["WEBSITE_SITE_NAME"]);
 
             app.Run();
         }

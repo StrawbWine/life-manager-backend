@@ -34,16 +34,6 @@ namespace life_manager_backend
 
             // Add services to the container.
 
-            //builder.Services.AddCors(options =>
-            //{
-            //    options.AddDefaultPolicy(policy =>
-            //        {
-            //            policy.AllowAnyMethod()
-            //            .AllowAnyHeader()
-            //            .WithOrigins(builder.Configuration["LifeManagerApiCorsEnabledUrl"]);
-            //        });
-            //});
-
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -56,15 +46,34 @@ namespace life_manager_backend
             //        ServerVersion.AutoDetect(builder.Configuration["LifeManagerMySQLConnectionString"]))
             //    );
 
-            builder.Services.AddDbContextFactory<CosmosContext>(optionsBuilder => {
-                optionsBuilder.UseCosmos(
-                    //connectionString: builder.Configuration["DEV_COSMOS_CONNECTION_STRING"],
-                    //databaseName: builder.Configuration["DEV_COSMOS_DATABASE"]
-                    connectionString: connString,
-                    databaseName: databaseName
-                );
-                }
-            );
+            if (builder.Environment.EnvironmentName == "Development")
+            {
+                builder.Services.AddDbContextFactory<CosmosContext>(optionsBuilder => {
+                    optionsBuilder.UseCosmos(
+                        connectionString: builder.Configuration["DEV_COSMOS_CONNECTION_STRING"],
+                        databaseName: builder.Configuration["DEV_COSMOS_DATABASE"]
+                    );
+                });
+                builder.Services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(policy =>
+                    {
+                        policy.AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins(builder.Configuration["LifeManagerApiCorsEnabledUrl"]);
+                    });
+                });
+            }
+
+            else
+            {
+                builder.Services.AddDbContextFactory<CosmosContext>(optionsBuilder => {
+                    optionsBuilder.UseCosmos(
+                        connectionString: connString,
+                        databaseName: databaseName
+                    );
+                });
+            }
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

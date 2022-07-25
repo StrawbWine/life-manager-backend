@@ -8,6 +8,7 @@ namespace life_manager_backend.DbContexts
     {
         public DbSet<Food> Foods { get; set; } = null!;
         public DbSet<FoodPortion> FoodPortions { get; set; } = null!;
+        public DbSet<ApiUser> ApiUsers { get; set; } = null!;
 
         public CosmosContext(DbContextOptions<CosmosContext> options) : base(options)
         {
@@ -47,6 +48,20 @@ namespace life_manager_backend.DbContexts
                     }
                 );
 
+            modelBuilder.Entity<ApiUser>()
+                .HasData(
+                    new ApiUser(
+                        username: "TestUsername",
+                        password: "TestPassword",
+                        email: "TestEmail",
+                        registeredAt: new DateTime(2022, 1, 1),
+                        isBanned: false
+                        )
+                    {
+                        Id = Guid.NewGuid().ToString()
+                    }
+                );
+
             modelBuilder
                 .HasDefaultContainer("lifemgr-default")
                 .HasManualThroughput(400);
@@ -62,6 +77,12 @@ namespace life_manager_backend.DbContexts
 
             modelBuilder.Entity<FoodPortion>()
                 .HasPartitionKey(f => f.PartitionKey);
+
+            modelBuilder.Entity<ApiUser>()
+                .HasKey(u => u.Id);
+
+            modelBuilder.Entity<ApiUser>()
+                .HasPartitionKey(u => u.PartitionKey);
 
             base.OnModelCreating(modelBuilder);
         }

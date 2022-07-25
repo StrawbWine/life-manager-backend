@@ -88,5 +88,14 @@ namespace life_manager_backend.Services
         {
             return (await _context.SaveChangesAsync() >= 0);
         }
+
+        public async Task<ApiUser?> GetApiUserAsync(string username, string password)
+        {
+            var user = await _context.ApiUsers
+                .Where(u => u.Username == username)
+                .Where(u => u.Password == password)
+                .FirstOrDefaultAsync();
+            return user;
+        }
     }
 }

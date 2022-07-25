@@ -4,13 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Azure.Core;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace life_manager_backend
 {
     public class Program
     {
         public static void Main(string[] args)
-        {
+        {            
             SecretClientOptions options = new SecretClientOptions()
             {
                 Retry =
@@ -25,9 +27,11 @@ namespace life_manager_backend
 
             KeyVaultSecret connStringSecret = client.GetSecret("cosmos-connection-string");
             KeyVaultSecret databaseSecret = client.GetSecret("cosmos-database");
+            KeyVaultSecret secretForKey = client.GetSecret("lifemgr-secret-for-key");
 
             string connString = connStringSecret.Value;
             string databaseName = databaseSecret.Value;
+            string secretForKeyString = secretForKey.Value;
 
 
             var builder = WebApplication.CreateBuilder(args);
@@ -80,6 +84,37 @@ namespace life_manager_backend
             //builder.Services.AddScoped<IFoodRepository, FoodRepository>();
             builder.Services.AddScoped<IFoodRepository, CosmosRepository>();
 
+            builder.Services.AddAuthentication("Bearer")
+                .AddJwtBearer(options =>
+                {
+                    if (builder.Environment.IsDevelopment())
+                    {
+                        options.TokenValidationParameters = new()
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateIssuerSigningKey = true,
+                            ValidIssuer = builder.Configuration["Authentication:Issuer"],
+                            ValidAudience = builder.Configuration["Authentication:Audience"],
+                            IssuerSigningKey = new SymmetricSecurityKey(
+                                Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
+                        };
+                    } 
+                    else
+                    {
+                        options.TokenValidationParameters = new()
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateIssuerSigningKey = true,
+                            ValidIssuer = builder.Configuration["WEBSITE_HOSTNAME"],
+                            ValidAudience = builder.Configuration["WEBSITE_SITE_NAME"],
+                            IssuerSigningKey = new SymmetricSecurityKey(
+                                Encoding.ASCII.GetBytes(secretForKeyString))
+                        };
+                    }
+                });
+
             var app = builder.Build();            
 
             // Configure the HTTP request pipeline.
@@ -92,6 +127,8 @@ namespace life_manager_backend
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseCors();
 

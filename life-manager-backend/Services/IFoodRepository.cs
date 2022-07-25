@@ -15,6 +15,7 @@ namespace life_manager_backend.Services
         void AddFoodPortion(FoodPortion foodPortion);
         void DeleteFoodPortion(FoodPortion foodPortion);
         Task<bool> SaveChangesAsync();
+        Task<ApiUser?> GetApiUserAsync(string username, string password);
         
     }
 }

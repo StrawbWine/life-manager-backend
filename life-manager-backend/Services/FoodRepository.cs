@@ -69,5 +69,10 @@ namespace life_manager_backend.Services
         {
             return (await _context.SaveChangesAsync() >= 0);
         }
+
+        public Task<ApiUser?> GetApiUserAsync(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

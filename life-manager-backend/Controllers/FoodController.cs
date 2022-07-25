@@ -2,6 +2,7 @@
 using life_manager_backend.DbContexts;
 using life_manager_backend.Models;
 using life_manager_backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace life_manager_backend.Controllers
 {
     [Route("api/food")]
+    [Authorize]
     [ApiController]
     public class FoodController : ControllerBase
     {

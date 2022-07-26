@@ -128,9 +128,9 @@ namespace life_manager_backend
 
             app.UseRouting();
 
-            app.UseAuthentication();
-
             app.UseCors();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
